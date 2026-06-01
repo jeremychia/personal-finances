@@ -171,7 +171,7 @@ The project handles multi-currency scenarios with:
 
 5. **Update profiles.yml:**
 
-   Edit `profiles.yml` and update the `project` and `dataset` values:
+   Edit `dbt/profiles.yml` and update the `project` and `dataset` values:
    ```yaml
    jeremy-chia:
      outputs:
@@ -182,21 +182,25 @@ The project handles multi-currency scenarios with:
 
 6. **Install dbt packages:**
    ```bash
+   cd dbt
    dbt deps
    ```
 
 7. **Install pre-commit hooks:**
    ```bash
+   cd ..  # Back to project root
    pre-commit install
    ```
 
 8. **Load seed data:**
    ```bash
+   cd dbt
    dbt seed
    ```
 
 9. **Build the project:**
    ```bash
+   cd dbt
    # Dev environment (default)
    dbt build
 
@@ -205,6 +209,14 @@ The project handles multi-currency scenarios with:
    ```
 
 **Note:** With direnv, you don't need to prefix commands with `poetry run` - the virtual environment is automatically activated when you're in the project directory!
+
+### Project Structure
+The project is organized as follows:
+- **`dbt/`** - All dbt files (models, seeds, macros, tests, etc.)
+- **`classifier/`** - Placeholder for future classification pipeline
+- **`keys/`** - BigQuery service account credentials (git-ignored)
+- **`scripts/`** - Utility scripts
+- **`pyproject.toml`** - Shared Python dependencies (root level)
 
 ### Customizing direnv Settings
 
@@ -224,7 +236,7 @@ This project automatically deploys dbt documentation to GitHub Pages. The docume
 - **Source documentation**: Information about raw data sources and their schemas
 
 ### Accessing the Documentation
-The dbt docs are automatically deployed to: `https://jeremychia.github.io/personal-finances-dbt/`
+The dbt docs are automatically deployed to: `https://jeremychia.github.io/personal-finances/` (update this URL if you rename the repository)
 
 ### How it Works
 The deployment is handled by a GitHub Actions workflow (`.github/workflows/deploy-dbt-docs.yml`) that:
