@@ -51,22 +51,22 @@ jobs:
       - name: Install dbt packages
         run: |
           source .venv/bin/activate
-          dbt deps
+          dbt deps --project-dir dbt --profiles-dir dbt
       - name: Generate dbt docs
         env:
           DBT_KEYFILE_PATH: keys/keyfile.json
         run: |
           source .venv/bin/activate
           # Generate docs without running models (using existing manifest if available)
-          dbt docs generate --target prod
+          dbt docs generate --target prod --project-dir dbt --profiles-dir dbt
       - name: Prepare docs for Pages
         run: |
           # Create a docs directory for GitHub Pages
           mkdir -p docs-site
           # Copy the generated docs files
-          cp target/index.html docs-site/
-          cp target/catalog.json docs-site/
-          cp target/manifest.json docs-site/
+          cp dbt/target/index.html docs-site/
+          cp dbt/target/catalog.json docs-site/
+          cp dbt/target/manifest.json docs-site/
 
           # Create a simple index redirect if needed
           cat > docs-site/404.html << 'EOF'

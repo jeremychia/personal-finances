@@ -4,8 +4,8 @@ templater = dbt
 exclude_rules = None
 
 [sqlfluff:templater:dbt]
-project_dir = ./
-profiles_dir = ./
+project_dir = ./dbt
+profiles_dir = ./dbt
 profile = jeremy-chia
 
 [sqlfluff:indentation]

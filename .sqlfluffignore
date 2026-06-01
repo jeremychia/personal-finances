@@ -1,2 +1,2 @@
 # Files with BigQuery-specific syntax that sqlfluff cannot parse
-models/staging/fx/stg_fx_fx_sgd.sql
+dbt/models/staging/fx/stg_fx_fx_sgd.sql

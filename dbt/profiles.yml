@@ -9,7 +9,7 @@ jeremy-chia:
       method: service-account
       project: jeremy-chia
       dataset: dev
-      keyfile: "{{ env_var('DBT_KEYFILE_PATH', 'keys/keyfile.json') }}"
+      keyfile: "{{ env_var('DBT_KEYFILE_PATH', '../keys/keyfile.json') }}"
       threads: 8
       timeout_seconds: 600
       location: US
@@ -18,7 +18,7 @@ jeremy-chia:
       method: service-account
       project: jeremy-chia
       dataset: prod
-      keyfile: "{{ env_var('DBT_KEYFILE_PATH', 'keys/keyfile.json') }}"
+      keyfile: "{{ env_var('DBT_KEYFILE_PATH', '../keys/keyfile.json') }}"
       threads: 8
       timeout_seconds: 600
       location: US
