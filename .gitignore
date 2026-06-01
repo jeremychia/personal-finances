@@ -164,6 +164,7 @@ cython_debug/
 target/
 dbt_packages/
 logs/
+dbt/.user.yml
 # end dbt Cloud content
 
 # macOS
