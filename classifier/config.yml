@@ -16,16 +16,16 @@ google_sheets:
     # - de_eur_wise
     # - gb_gbp_wise
     # - gb_hkd_wise
+    # - sg_sgd_wise
+    # - us_usd_wise
     # - fr_eur_hsbcfr
-    - hk_hkd_hangseng
-    - sg_eur_revolut_v2
-    - sg_other_revolut_v2
+    # - hk_hkd_hangseng
+    # - sg_eur_revolut_v2
+    # - sg_other_revolut_v2
     - sg_sgd_dbs
-    - sg_sgd_revolut_v2
+    # - sg_sgd_revolut_v2
     - sg_sgd_uob
     - sg_sgd_uobcc
-    - sg_sgd_wise
-    - us_usd_wise
 classifier:
   confidence_threshold: 0.80
   backup_dir: classifier/backups

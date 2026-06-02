@@ -162,9 +162,10 @@ def run_preflight_checks(cfg: dict, sheet_names: list[str]) -> None:
 def main():
     # Setup logging with pretty formatting
     class ColoredFormatter(logging.Formatter):
-        """Custom formatter with colors and emojis."""
+        """Custom formatter with colors, timestamps, and emojis."""
 
         COLORS = {
+            "DEBUG": "\033[90m",  # Gray
             "INFO": "\033[94m",  # Blue
             "WARNING": "\033[93m",  # Yellow
             "ERROR": "\033[91m",  # Red
@@ -175,17 +176,38 @@ def main():
         def format(self, record):
             level = record.levelname
             color = self.COLORS.get(level, self.RESET)
+            timestamp = self.formatTime(record, datefmt="%H:%M:%S")
+
             emoji = {
+                "DEBUG": "🔍",
                 "INFO": "ℹ️",
                 "WARNING": "⚠️",
                 "ERROR": "❌",
             }.get(level, "")
-            record.msg = f"{emoji} {record.msg}" if emoji else record.msg
-            return f"{color}{record.msg}{self.RESET}"
+
+            if emoji:
+                msg = f"{emoji}  {record.msg}"
+            else:
+                msg = record.msg
+
+            return f"{color}[{timestamp}] {msg}{self.RESET}"
 
     handler = logging.StreamHandler()
     handler.setFormatter(ColoredFormatter())
-    logging.basicConfig(level=logging.INFO, handlers=[handler])
+
+    # Configure root logger to show only INFO and above (suppress library DEBUG logs)
+    root_logger = logging.getLogger()
+    root_logger.setLevel(logging.INFO)
+    root_logger.handlers = [handler]
+
+    # Set our classifier modules to DEBUG to show internal details
+    for module in [
+        "classifier.model",
+        "classifier.bigquery_client",
+        "classifier.sheets_client",
+        "classifier.sql_parser",
+    ]:
+        logging.getLogger(module).setLevel(logging.DEBUG)
 
     parser = argparse.ArgumentParser(
         description="Classify blank categories in bank transaction sheets"

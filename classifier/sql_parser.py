@@ -1,6 +1,9 @@
+import logging
 import re
 import sqlglot
 from sqlglot.expressions import Column
+
+logger = logging.getLogger(__name__)
 
 
 def extract_description_columns(sql_text: str) -> list[str]:
@@ -14,12 +17,14 @@ def extract_description_columns(sql_text: str) -> list[str]:
 
     Returns a list of source column names (lowercased). Raises ValueError if extraction fails.
     """
+    logger.debug("Extracting description columns from SQL")
     # Strip Jinja template expressions by replacing with a stub table name
     sql_clean = re.sub(r"\{\{[^}]*\}\}", "source_table", sql_text)
 
     try:
         parsed = sqlglot.parse_one(sql_clean, dialect="bigquery")
     except Exception as e:
+        logger.error(f"Failed to parse SQL: {e}")
         raise ValueError(f"Failed to parse SQL: {e}")
 
     # Find the SELECT statement that contains the `description` alias
@@ -60,8 +65,10 @@ def extract_description_columns(sql_text: str) -> list[str]:
             columns.add(col_name)
 
     if not columns:
+        logger.error("No source columns found in description expression")
         raise ValueError("No source columns found in description expression")
 
+    logger.debug(f"Found description columns: {sorted(list(columns))}")
     return sorted(list(columns))
 
 

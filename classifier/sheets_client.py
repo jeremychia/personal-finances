@@ -1,8 +1,11 @@
 import csv
+import logging
 import os
 from datetime import datetime
 from google.oauth2 import service_account
 import gspread
+
+logger = logging.getLogger(__name__)
 
 SCOPES = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -13,11 +16,14 @@ SCOPES = [
 
 def get_client(keyfile: str) -> gspread.Client:
     """Authenticate to Google Sheets using service account."""
+    logger.debug(f"Authenticating with Google Sheets using keyfile: {keyfile}")
     try:
         creds = service_account.Credentials.from_service_account_file(
             keyfile, scopes=SCOPES
         )
-        return gspread.authorize(creds)
+        client = gspread.authorize(creds)
+        logger.debug("Successfully authenticated with Google Sheets API")
+        return client
     except FileNotFoundError:
         raise RuntimeError(
             f"Keyfile not found: {keyfile}\n\n"
@@ -51,16 +57,18 @@ def backup_sheet(ws: gspread.Worksheet, backup_dir: str) -> str:
 
     Returns the file path.
     """
+    logger.debug(f"Creating backup for sheet: {ws.title}")
     os.makedirs(backup_dir, exist_ok=True)
     ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     path = os.path.join(backup_dir, f"{ts}_{ws.title}.csv")
 
+    logger.debug(f"Fetching all values from sheet: {ws.title}")
     rows = ws.get_all_values()
     with open(path, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerows(rows)
 
-    print(f"  Backup saved: {path}")
+    logger.info(f"Backup saved: {path}")
     return path
 
 
@@ -75,6 +83,7 @@ def get_blank_category_rows(ws: gspread.Worksheet) -> tuple[list[dict], int, lis
 
     Raises KeyError if 'category' column is not found.
     """
+    logger.debug(f"Fetching all records from sheet: {ws.title}")
     records = ws.get_all_records()  # uses row 1 as header (lowercased)
     header = ws.row_values(1)
 
@@ -100,6 +109,7 @@ def get_blank_category_rows(ws: gspread.Worksheet) -> tuple[list[dict], int, lis
             blank_records.append(row)
             blank_row_nums.append(i + 2)  # +2: skip header row + convert to 1-indexed
 
+    logger.debug(f"Found {len(blank_records)} blank category rows in {ws.title}")
     return blank_records, cat_col, blank_row_nums
 
 
@@ -121,7 +131,13 @@ def write_predictions(
     Returns the count of cells updated.
     """
     if not row_nums:
+        logger.debug(f"No rows to update in {ws.title}")
         return 0
+
+    logger.debug(
+        f"Preparing batch update for {len(row_nums)} rows in {ws.title} "
+        f"(column {chr(65 + cat_col)})"
+    )
 
     # Batch update using worksheet's update method
     updates = []
@@ -143,6 +159,8 @@ def write_predictions(
                 for update in updates
             ],
         }
+        logger.debug(f"Sending batch update to Google Sheets API")
         ws.spreadsheet.values_batch_update(body)
+        logger.info(f"Updated {len(updates)} cells in {ws.title}")
 
     return len(updates)
