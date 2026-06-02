@@ -1,4 +1,4 @@
-{% macro test_date_format(model, column_name, date_format) %}
+{% macro test_date_fmt(model, column_name, date_format) %}
 {%- if execute -%}
   {%- set invalid_rows = run_query("
     select " ~ column_name ~ " as date_value

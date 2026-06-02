@@ -6,9 +6,10 @@ sources:
     project:
     dataset: google_sheets
     loader: external_table
-    tags:
-      - source
-      - google_sheet
+    config:
+      tags:
+        - source
+        - google_sheet
     tables:
       - name: de_eur_amex_payback
         description: >
@@ -58,7 +59,7 @@ sources:
             data_type: STRING
             description: Date in DD/MM/YYYY format
             data_tests:
-              - date_format:
+              - date_fmt:
                   arguments:
                     column_name: datum
                     date_format: "'%d/%m/%Y'"
@@ -418,7 +419,7 @@ sources:
             data_type: STRING
             description: Date in M/D/YYYY or MM/DD/YYYY format
             data_tests:
-              - date_format:
+              - date_fmt:
                   arguments:
                     column_name: voucher_date
                     date_format: "'%m/%d/%Y'"
@@ -462,7 +463,7 @@ sources:
             data_type: STRING
             description: Date in DD/MM/YYYY format
             data_tests:
-              - date_format:
+              - date_fmt:
                   arguments:
                     column_name: date
                     date_format: "'%d/%m/%Y'"
@@ -655,7 +656,7 @@ sources:
             data_type: STRING
             description: Date in DD-MMM-YY format
             data_tests:
-              - date_format:
+              - date_fmt:
                   arguments:
                     column_name: transaction_Date
                     date_format: "'%d-%b-%y'"
@@ -697,7 +698,7 @@ sources:
             data_type: STRING
             description: Date in DD-MMM-YY format
             data_tests:
-              - date_format:
+              - date_fmt:
                   arguments:
                     column_name: transaction_date
                     date_format: "'%d-%b-%y'"
@@ -735,7 +736,7 @@ sources:
             data_type: STRING
             description: Date in DD-MMM-YY format
             data_tests:
-              - date_format:
+              - date_fmt:
                   arguments:
                     column_name: transaction_date
                     date_format: "'%d-%b-%y'"
