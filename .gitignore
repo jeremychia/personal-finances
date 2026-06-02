@@ -189,3 +189,6 @@ dashboard/data/
 
 # direnv local overrides
 .envrc.local
+
+# Classifier backups
+classifier/backups/

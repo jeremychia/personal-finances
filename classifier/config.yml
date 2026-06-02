@@ -1,0 +1,31 @@
+bigquery:
+  project: jeremy-chia
+  dataset: prod_facts
+  table: fact_bank_transactions
+  keyfile: keys/keyfile.json
+google_sheets:
+  spreadsheet_id: 1ez5NlsMezTIz0maAtRagJqkNW_NkGNtRHj9QqlzIVJ0
+  keyfile: keys/keyfile.json
+  # Sheets to process. Comment out individual sheets to skip them.
+  sheets:
+    # - de_eur_amex_payback
+    - de_eur_amex_rose
+    # - de_eur_miles_more
+    - de_eur_milesmore_ftl_db
+    - de_eur_n26
+    # - de_eur_wise
+    # - gb_gbp_wise
+    # - gb_hkd_wise
+    # - fr_eur_hsbcfr
+    - hk_hkd_hangseng
+    - sg_eur_revolut_v2
+    - sg_other_revolut_v2
+    - sg_sgd_dbs
+    - sg_sgd_revolut_v2
+    - sg_sgd_uob
+    - sg_sgd_uobcc
+    - sg_sgd_wise
+    - us_usd_wise
+classifier:
+  confidence_threshold: 0.80
+  backup_dir: classifier/backups
