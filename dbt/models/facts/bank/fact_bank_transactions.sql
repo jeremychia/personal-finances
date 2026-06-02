@@ -6,6 +6,7 @@ union_all as (
                     ref("stg_bank_de_eur_amex_payback"),
                     ref("stg_bank_de_eur_amex_rose"),
                     ref("stg_bank_de_eur_miles_more"),
+                    ref("stg_bank_de_eur_milesmore_ftl_db"),
                     ref("stg_bank_de_eur_n26"),
                     ref("stg_bank_de_eur_wise"),
                     ref("stg_bank_gb_gbp_wise"),

@@ -388,6 +388,35 @@ sources:
             data_type: STRING
           - name: category
             data_type: STRING
+      - name: de_eur_milesmore_ftl_db
+        description: >
+          de_eur_milesmore_ftl_db
+
+        external:
+          options:
+            format: GOOGLE_SHEETS
+            uris: ['https://docs.google.com/spreadsheets/d/1ez5NlsMezTIz0maAtRagJqkNW_NkGNtRHj9QqlzIVJ0/']
+            sheet_range: de_eur_milesmore_ftl_db
+            skip_leading_rows: 1
+        columns:
+          - name: voucher_date
+            data_type: STRING
+          - name: date_of_receipt
+            data_type: STRING
+          - name: reason_for_payment
+            data_type: STRING
+          - name: foreign_currency
+            data_type: STRING
+          - name: foreign_currency_amount
+            data_type: STRING
+          - name: exchange_rate
+            data_type: STRING
+          - name: payment_currency_amount
+            data_type: STRING
+          - name: payment_currency
+            data_type: STRING
+          - name: category
+            data_type: STRING
       - name: de_eur_n26
         description: >
           de_eur_n26
