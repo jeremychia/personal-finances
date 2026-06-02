@@ -9,9 +9,9 @@ def load_training_data(
     project: str, dataset: str, table: str, keyfile: str
 ) -> pd.DataFrame:
     """
-    Load labelled transactions from BigQuery.
+    Load labelled transactions from BigQuery for model training.
 
-    Returns DataFrame with columns: bank_source, local_currency, local_amount, description, category.
+    Returns DataFrame with columns: description, local_amount, category.
     Only rows with non-null, non-empty category are returned.
     """
     credentials = service_account.Credentials.from_service_account_file(
@@ -20,7 +20,7 @@ def load_training_data(
     client = bigquery.Client(project=project, credentials=credentials)
 
     query = f"""
-        SELECT bank_source, local_currency, local_amount, description, category
+        SELECT description, local_amount, category
         FROM `{project}.{dataset}.{table}`
         WHERE category IS NOT NULL AND TRIM(category) != ''
     """
