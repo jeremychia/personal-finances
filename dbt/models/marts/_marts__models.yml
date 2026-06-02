@@ -64,3 +64,33 @@ models:
         description: Transaction description (e.g. "  ", "  CASH REBATE", " 0016RF9246128 SOAP CYCLING (SINGAP").
       - name: day_of_week_iso
         description: ISO day of week for transaction date
+  - name: mart_eur_balances
+    description: |
+      All your account balances in one place (bank and investments), converted to EUR. Shows what you own at market value, gains/losses from investments and currency movements, with one row per account per day.
+
+      Granularity: One row per date per source per account type
+      Filters: Historical dates up to yesterday
+      Keywords: net-worth, consolidated-balances, EUR, portfolio, investments, cash, total-assets
+    columns:
+      - name: account_type
+        description: Account classification (investment, cash, credit-card) (e.g. "cash", "credit-card", "investment").
+      - name: local_date
+        description: Balance date (e.g. "2018-01-01", "2018-01-02", "2018-01-03").
+      - name: source_name
+        description: Account identifier (investment or bank) (e.g. "CDP - 5A1B - ASTREAVB290620", "CDP - BN4 - KEPPEL CORP", "CDP - RMRB - ASTREAIVB280614").
+      - name: local_currency
+        description: Original account currency (e.g. "CHF", "EUR", "GBP").
+      - name: local_balance
+        description: Balance in local currency (e.g. "-10296.67", "-10277.72", "-10155.38").
+      - name: eur_currency
+        description: EUR currency indicator.
+      - name: eur_balance
+        description: Balance converted to EUR (e.g. "-10296.67", "-10277.72", "-10155.38").
+      - name: eur_invm_gain_loss
+        description: Investment gains/losses in EUR, 0 for bank accounts (e.g. "-10550.66", "-10419.33", "-10250.63").
+      - name: eur_fx_gain_loss
+        description: FX gains/losses in EUR (e.g. "-2990.89", "-2984.48", "-2978.13").
+      - name: day_of_week_iso
+        description: ISO day of week
+      - name: is_latest_date
+        description: Flag for most recent date (current positions)

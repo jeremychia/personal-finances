@@ -50,3 +50,27 @@ models:
         description: Change in investment gains/losses (SGD) (e.g. "-2054.08", "-1619.3", "-1216.65").
       - name: change_sgd_fx_gain_loss
         description: Change in FX gains/losses (SGD) (e.g. "-21486.61", "-839.35", "-705.12").
+  - name: fact_invm_balances_eur_movement
+    description: |
+      Day-over-day changes in investment portfolio values converted to EUR. Breaks down daily swings into investment performance (price changes) vs. FX movements (currency changes), all in EUR.
+
+      Granularity: One row per date per investment source per currency
+      Filters: None
+      Keywords: investments, movements, changes, performance-attribution, EUR-conversion
+    columns:
+      - name: investment_source
+        description: Investment account identifier (e.g. "CDP - 5A1B - ASTREAVB290620", "CDP - BN4 - KEPPEL CORP", "CDP - RMRB - ASTREAIVB280614").
+      - name: local_date
+        description: Movement date (e.g. "2018-07-18", "2018-10-26", "2018-12-25").
+      - name: local_currency_market
+        description: Investment currency code (e.g. "HKD", "SGD", "USD").
+      - name: eur_currency_market
+        description: EUR currency indicator.
+      - name: change_local_market
+        description: Change in market value (local currency) (e.g. "-46342.71", "-10694.22", "-10635.1").
+      - name: change_eur_market
+        description: Change in market value (EUR) (e.g. "-13498.25", "-10694.22", "-10635.1").
+      - name: change_eur_invm_gain_loss
+        description: Change in investment gains/losses (EUR) (e.g. "-2054.08", "-1619.3", "-1216.65").
+      - name: change_eur_fx_gain_loss
+        description: Change in FX gains/losses (EUR) (e.g. "-21486.61", "-839.35", "-705.12").
