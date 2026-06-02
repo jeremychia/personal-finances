@@ -9,7 +9,7 @@ source as (
 
 renamed as (
     select
-        'miles&more-ftl-db' as bank_source,
+        'miles&more-ftl-db-cc' as bank_source,
         'EUR' as local_currency,
         category,
         parse_date('%m/%d/%Y', voucher_date) as local_date,
@@ -25,7 +25,7 @@ renamed as (
 -- this is because the ledger from credit statements do not have transfers
 n26_transfers as (
     select
-        'miles&more-ftl-db' as bank_source,
+        'miles&more-ftl-db-cc' as bank_source,
         local_currency,
         category,
         local_date,
