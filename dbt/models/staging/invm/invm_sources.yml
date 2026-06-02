@@ -6,9 +6,6 @@ sources:
     project:
     dataset: google_sheets
     loader: external_table
-    tags:
-      - source
-      - google_sheet
     tables:
       - name: sgd_cdp_invm
         description: >
@@ -127,3 +124,7 @@ sources:
             data_type: STRING
           - name: is_redeemed
             data_type: STRING
+    config:
+      tags:
+        - source
+        - google_sheet

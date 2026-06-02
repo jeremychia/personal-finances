@@ -28,13 +28,13 @@ repos:
       - id: sqlfluff-lint
         name: Lint SQL files
         args: ['--dialect', 'bigquery', '--processes', '4']
-        additional_dependencies: ['sqlfluff-templater-dbt==4.0.0', 'dbt-core>=1.9,<2.0', 'dbt-bigquery>=1.9,<2.0']
+        additional_dependencies: ['sqlfluff-templater-dbt==4.0.0', 'dbt-core==1.12.0b2', 'dbt-bigquery>=1.11,<2.0']
         language_version: python3.12
         stages: [manual]
       - id: sqlfluff-fix
         name: Fix SQL files
         args: ['--dialect', 'bigquery']
-        additional_dependencies: ['sqlfluff-templater-dbt==4.0.0', 'dbt-core>=1.9,<2.0', 'dbt-bigquery>=1.9,<2.0']
+        additional_dependencies: ['sqlfluff-templater-dbt==4.0.0', 'dbt-core==1.12.0b2', 'dbt-bigquery>=1.11,<2.0']
         language_version: python3.12
         stages: [manual]
   # YAML formatting

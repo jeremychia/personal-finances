@@ -19,7 +19,7 @@ package-mode = false
 
 [tool.poetry.dependencies]
 python = "~3.12"
-dbt-core = ">=1.11, <2.0"
+dbt-core = "1.12.0b2"
 dbt-bigquery = ">=1.11, <2.0"
 gspread = ">=6.0"
 scikit-learn = ">=1.4"

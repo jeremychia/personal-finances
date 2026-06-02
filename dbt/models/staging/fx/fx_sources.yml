@@ -6,9 +6,6 @@ sources:
     project:
     dataset: google_sheets
     loader: external_table
-    tags:
-      - source
-      - google_sheet
     tables:
       - name: fx_sgd
         description: >
@@ -37,6 +34,10 @@ sources:
             data_type: STRING
           - name: gbp
             data_type: STRING
+    config:
+      tags:
+        - source
+        - google_sheet
   - name: fx
     config:
       enabled: true
