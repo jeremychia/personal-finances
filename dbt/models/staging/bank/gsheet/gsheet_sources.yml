@@ -76,6 +76,15 @@ sources:
             data_type: STRING
           - name: category
             data_type: STRING
+            description: >
+              Category for this transaction. If null: fill in the value in the source Google Sheet. If not in accepted values: add the new category to dbt/seeds/categories.csv.
+
+            data_tests:
+              - not_null
+              - relationships_verbose:
+                  arguments:
+                    to: ref('categories')
+                    field: category
       - name: de_eur_miles_more
         description: >
           de_eur_miles_more
@@ -417,6 +426,15 @@ sources:
             data_type: STRING
           - name: category
             data_type: STRING
+            description: >
+              Category for this transaction. If null: fill in the value in the source Google Sheet. If not in accepted values: add the new category to dbt/seeds/categories.csv.
+
+            data_tests:
+              - not_null
+              - relationships_verbose:
+                  arguments:
+                    to: ref('categories')
+                    field: category
       - name: de_eur_n26
         description: >
           de_eur_n26
@@ -448,6 +466,15 @@ sources:
             data_type: STRING
           - name: category
             data_type: STRING
+            description: >
+              Category for this transaction. If null: fill in the value in the source Google Sheet. If not in accepted values: add the new category to dbt/seeds/categories.csv.
+
+            data_tests:
+              - not_null
+              - relationships_verbose:
+                  arguments:
+                    to: ref('categories')
+                    field: category
       - name: fr_eur_hsbcfr
         description: >
           fr_eur_hsbcfr
@@ -622,6 +649,15 @@ sources:
             data_type: STRING
           - name: category
             data_type: STRING
+            description: >
+              Category for this transaction. If null: fill in the value in the source Google Sheet. If not in accepted values: add the new category to dbt/seeds/categories.csv.
+
+            data_tests:
+              - not_null
+              - relationships_verbose:
+                  arguments:
+                    to: ref('categories')
+                    field: category
       - name: sg_sgd_uob
         description: >
           sg_sgd_uob
@@ -645,6 +681,15 @@ sources:
             data_type: STRING
           - name: category
             data_type: STRING
+            description: >
+              Category for this transaction. If null: fill in the value in the source Google Sheet. If not in accepted values: add the new category to dbt/seeds/categories.csv.
+
+            data_tests:
+              - not_null
+              - relationships_verbose:
+                  arguments:
+                    to: ref('categories')
+                    field: category
       - name: sg_sgd_uobcc
         description: >
           sg_sgd_uobcc
@@ -672,3 +717,12 @@ sources:
             data_type: STRING
           - name: category
             data_type: STRING
+            description: >
+              Category for this transaction. If null: fill in the value in the source Google Sheet. If not in accepted values: add the new category to dbt/seeds/categories.csv.
+
+            data_tests:
+              - not_null
+              - relationships_verbose:
+                  arguments:
+                    to: ref('categories')
+                    field: category
