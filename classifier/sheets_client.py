@@ -123,16 +123,26 @@ def write_predictions(
     if not row_nums:
         return 0
 
+    # Batch update using worksheet's update method
     updates = []
     for row_num, pred in zip(row_nums, predictions):
-        # Convert to A1 notation (e.g., "B42" for column 1, row 42)
-        col_letter = gspread.utils.rowcol_to_a1(row_num, cat_col + 1).rstrip(
-            "0123456789"
-        )
+        # Convert column index (0-based) to A1 column letter
+        col_letter = gspread.utils.rowcol_to_a1(1, cat_col + 1)[:-1]
         cell_ref = f"{col_letter}{row_num}"
         updates.append({"range": cell_ref, "values": [[pred]]})
 
     if updates:
-        ws.spreadsheet.values_batch_update({"valueInputOption": "RAW", "data": updates})
+        # Use spreadsheet.batch_update for proper A1 range handling with sheet name
+        body = {
+            "valueInputOption": "RAW",
+            "data": [
+                {
+                    "range": f"'{ws.title}'!{update['range']}",
+                    "values": update["values"],
+                }
+                for update in updates
+            ],
+        }
+        ws.spreadsheet.values_batch_update(body)
 
     return len(updates)
