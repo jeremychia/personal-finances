@@ -100,11 +100,11 @@ def run_preflight_checks(cfg: dict, sheet_names: list[str]) -> None:
         raise RuntimeError(f"BigQuery preflight failed: {e}")
 
     # 2. Google Sheets API
-    print("2. Testing Google Sheets API access...")
+    logger.info("2. Testing Google Sheets API access...")
     try:
         gc = get_client(sheets_cfg["keyfile"])
         spreadsheet = gc.open_by_key(sheets_cfg["spreadsheet_id"])
-        print(f"   ✓ Spreadsheet opened: {spreadsheet.title}")
+        logger.info(f"✓ Spreadsheet opened: {spreadsheet.title}")
     except PermissionError as e:
         # Check if it's the "API not enabled" error
         # The actual error is in the __cause__ chain
@@ -142,11 +142,11 @@ def run_preflight_checks(cfg: dict, sheet_names: list[str]) -> None:
         ) from e
 
     # 3. Staging SQL files and description columns
-    print("3. Checking staging SQL files and description columns...")
+    logger.info("3. Checking staging SQL files and description columns...")
     for sheet_name in sheet_names:
         try:
             cols = get_description_columns(sheet_name)
-            print(f"   ✓ {sheet_name}: description columns = {cols}")
+            logger.info(f"✓ {sheet_name}: description columns = {cols}")
         except FileNotFoundError as e:
             raise FileNotFoundError(
                 f"Staging SQL preflight failed for {sheet_name}: {e}"
@@ -156,15 +156,36 @@ def run_preflight_checks(cfg: dict, sheet_names: list[str]) -> None:
                 f"Description column extraction failed for {sheet_name}: {e}"
             )
 
-    print("\n✓ All preflight checks passed.\n")
+    logger.info("✓ All preflight checks passed.")
 
 
 def main():
-    # Setup logging
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(message)s",
-    )
+    # Setup logging with pretty formatting
+    class ColoredFormatter(logging.Formatter):
+        """Custom formatter with colors and emojis."""
+
+        COLORS = {
+            "INFO": "\033[94m",  # Blue
+            "WARNING": "\033[93m",  # Yellow
+            "ERROR": "\033[91m",  # Red
+            "SUCCESS": "\033[92m",  # Green
+        }
+        RESET = "\033[0m"
+
+        def format(self, record):
+            level = record.levelname
+            color = self.COLORS.get(level, self.RESET)
+            emoji = {
+                "INFO": "ℹ️",
+                "WARNING": "⚠️",
+                "ERROR": "❌",
+            }.get(level, "")
+            record.msg = f"{emoji} {record.msg}" if emoji else record.msg
+            return f"{color}{record.msg}{self.RESET}"
+
+    handler = logging.StreamHandler()
+    handler.setFormatter(ColoredFormatter())
+    logging.basicConfig(level=logging.INFO, handlers=[handler])
 
     parser = argparse.ArgumentParser(
         description="Classify blank categories in bank transaction sheets"
@@ -201,25 +222,24 @@ def main():
     try:
         run_preflight_checks(cfg, sheet_names)
     except Exception as e:
-        print(f"\n❌ Preflight check failed:\n\n{e}", file=sys.stderr)
+        logger.error(f"Preflight check failed: {e}")
         sys.exit(1)
 
     # --- Load training data ---
-    print("Loading training data from BigQuery...")
+    logger.info("Loading training data from BigQuery...")
     train_df = load_training_data(
         project=bq_cfg["project"],
         dataset=bq_cfg["dataset"],
         table=bq_cfg["table"],
         keyfile=bq_cfg["keyfile"],
     )
-    print(
-        f"  {len(train_df)} labelled rows, {train_df['category'].nunique()} categories\n"
+    logger.info(
+        f"{len(train_df)} labelled rows, {train_df['category'].nunique()} categories"
     )
 
     # --- Train model ---
-    print("Training classifier (with cross-validation)...")
+    logger.info("Training classifier (with cross-validation)...")
     pipeline = train(train_df, verbose=True)
-    print()
 
     # --- Process each sheet ---
     gc = get_client(sheets_cfg["keyfile"])
@@ -228,11 +248,11 @@ def main():
     total_written = 0
     all_predictions = []  # For dry-run CSV export
     for sheet_name in sheet_names:
-        print(f"Processing sheet: {sheet_name}")
+        logger.info(f"Processing sheet: {sheet_name}")
         try:
             ws = spreadsheet.worksheet(sheet_name)
         except Exception as e:
-            print(f"  ✗ Could not open worksheet: {e}\n")
+            logger.error(f"Could not open worksheet: {e}")
             continue
 
         # Get blank category rows and preserve original header order
@@ -241,14 +261,14 @@ def main():
             # Get the original header order from the sheet
             original_headers = ws.row_values(1)
         except KeyError as e:
-            print(f"  ✗ {e}\n")
+            logger.error(str(e))
             continue
 
         if not blank_rows:
-            print("  No blank category rows — skipping.\n")
+            logger.info("No blank category rows — skipping.")
             continue
 
-        print(f"  {len(blank_rows)} blank rows found")
+        logger.info(f"{len(blank_rows)} blank rows found")
 
         # Get staging SQL to derive description using the same logic as dbt
         try:
@@ -256,7 +276,7 @@ def main():
             with open(sql_path) as f:
                 staging_sql = f.read()
         except Exception as e:
-            print(f"  ✗ Failed to read staging SQL: {e}\n")
+            logger.error(f"Failed to read staging SQL: {e}")
             continue
 
         # Build inference DataFrame
@@ -269,8 +289,8 @@ def main():
                 axis=1,
             )
         except Exception as e:
-            print(f"  ⚠ Warning: Failed to evaluate description expression: {e}")
-            print(f"    Falling back to concatenating description columns\n")
+            logger.warning(f"Failed to evaluate description expression: {e}")
+            logger.info("Falling back to concatenating description columns")
             # Fallback: try to get description columns and concatenate
             try:
                 desc_cols = get_description_columns(sheet_name)
@@ -293,7 +313,7 @@ def main():
                 else:
                     infer_df["description"] = ""
             except Exception as fallback_e:
-                print(f"  ✗ Failed to build description: {fallback_e}\n")
+                logger.error(f"Failed to build description: {fallback_e}")
                 continue
 
         # Get amount
@@ -376,9 +396,8 @@ def main():
                 cat_col,
                 high_conf["predicted_category"].tolist(),
             )
-            print(f"  Wrote {n} predictions to sheet")
+            logger.info(f"Wrote {n} predictions to sheet")
             total_written += n
-        print()
 
     # Save dry-run results to CSV
     if args.dry_run and all_predictions:
@@ -391,9 +410,9 @@ def main():
         dry_run_path = os.path.join(backup_dir, f"dry_run_{ts}.csv")
         pred_df = pd.DataFrame(all_predictions)
         pred_df.to_csv(dry_run_path, index=False)
-        print(f"\nDry-run results saved to: {dry_run_path}")
+        logger.info(f"Dry-run results saved to: {dry_run_path}")
 
-    print(f"Done. Total cells updated: {total_written}")
+    logger.info(f"Done. Total cells updated: {total_written}")
 
 
 if __name__ == "__main__":
