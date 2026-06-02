@@ -16,6 +16,8 @@ models:
         description: Transaction currency code (SGD, EUR, USD, etc.) (e.g. "CHF", "EUR", "GBP").
       - name: local_amount
         description: Transaction amount in local currency (negative for debits, positive for credits) (e.g. "-32539.0", "-24999.0", "-23000.0").
+        data_tests:
+          - not_null
       - name: category
         description: Transaction category for expense tracking (e.g. "Allowance", "Bank Charge", "Books").
       - name: description

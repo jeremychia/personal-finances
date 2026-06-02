@@ -7,17 +7,25 @@ with source as (
     from {{ ref("stg_fx_fx_sgd_from_eur_ecb") }}
 ),
 
-backfill_for_empty_dates as (
+backfill_by_currency as (
     select
-        * except (exchange_rate),
+        local_date,
+        sgd,
         coalesce(
             exchange_rate,
-            lag(exchange_rate, 1)
-                over (partition by currency order by local_date),
-            lag(exchange_rate, 2)
-                over (partition by currency order by local_date)
-        ) as exchange_rate
+            lag(exchange_rate, 1) over (partition by currency order by local_date),
+            lag(exchange_rate, 2) over (partition by currency order by local_date),
+            lag(exchange_rate, 3) over (partition by currency order by local_date),
+            lag(exchange_rate, 4) over (partition by currency order by local_date),
+            lag(exchange_rate, 5) over (partition by currency order by local_date)
+        ) as exchange_rate,
+        currency
     from source
 )
 
-select * from backfill_for_empty_dates
+select
+    local_date,
+    sgd,
+    exchange_rate,
+    currency
+from backfill_by_currency

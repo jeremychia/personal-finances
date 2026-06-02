@@ -20,6 +20,8 @@ models:
         description: EUR currency indicator.
       - name: eur_amount
         description: Transaction amount converted to EUR (e.g. "-20466.06704824203", "-19800.0", "-17000.0").
+        data_tests:
+          - not_null
       - name: exchange_rate
         description: Exchange rate used for EUR conversion (e.g. "0.0024928331048236323", "0.002493579033987482", "0.002613490839714607").
       - name: category
@@ -78,6 +80,8 @@ models:
         description: SGD currency indicator.
       - name: sgd_amount
         description: Transaction amount converted to SGD (e.g. "-32539.0", "-29361.420000000002", "-24999.0").
+        data_tests:
+          - not_null
       - name: exchange_rate
         description: Exchange rate used for SGD conversion (e.g. "0.003462794465910507", "0.003496496521457247", "0.0038311162219376417").
       - name: category

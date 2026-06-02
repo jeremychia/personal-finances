@@ -1,4 +1,4 @@
-{% set end_date = (modules.datetime.date.today() - modules.datetime.timedelta(days=1)).strftime('%Y-%m-%d') %}
+{% set end_date = (modules.datetime.date.today()).strftime('%Y-%m-%d') %}
 
 with base_dates as (
     {{
