@@ -96,6 +96,7 @@ Rental,Rental Costs,Expense,Fixed
 Salary,Income,Income,Fixed
 Solidarity Collective,Others,Expense,Variable
 Tax,Tax,Expense,Fixed
+Term Life Insurance,Insurance,Expense,Fixed
 Traditional Chinese Medicine,Wellness,Expense,Variable
 Transfer (HSBC FR),Transfer,Transfer,Transfer
 Transfer (Revolut),Transfer,Transfer,Transfer
