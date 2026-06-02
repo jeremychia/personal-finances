@@ -52,6 +52,12 @@ jobs:
         run: |
           source .venv/bin/activate
           dbt deps --project-dir dbt --profiles-dir dbt
+      - name: Load dbt seeds
+        env:
+          DBT_KEYFILE_PATH: keys/keyfile.json
+        run: |
+          source .venv/bin/activate
+          dbt seed --target prod --project-dir dbt --profiles-dir dbt
       - name: Generate dbt docs
         env:
           DBT_KEYFILE_PATH: keys/keyfile.json
