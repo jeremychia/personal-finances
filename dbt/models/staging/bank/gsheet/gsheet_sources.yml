@@ -56,6 +56,12 @@ sources:
         columns:
           - name: datum
             data_type: STRING
+            description: Date in DD/MM/YYYY format
+            data_tests:
+              - date_format:
+                  arguments:
+                    column_name: datum
+                    date_format: "'%d/%m/%Y'"
           - name: beschreibung
             data_type: STRING
           - name: betrag
@@ -410,6 +416,12 @@ sources:
         columns:
           - name: voucher_date
             data_type: STRING
+            description: Date in M/D/YYYY or MM/DD/YYYY format
+            data_tests:
+              - date_format:
+                  arguments:
+                    column_name: voucher_date
+                    date_format: "'%m/%d/%Y'"
           - name: date_of_receipt
             data_type: STRING
           - name: reason_for_payment
@@ -448,6 +460,12 @@ sources:
         columns:
           - name: date
             data_type: STRING
+            description: Date in DD/MM/YYYY format
+            data_tests:
+              - date_format:
+                  arguments:
+                    column_name: date
+                    date_format: "'%d/%m/%Y'"
           - name: payee
             data_type: STRING
           - name: account_number
@@ -635,6 +653,12 @@ sources:
         columns:
           - name: transaction_Date
             data_type: STRING
+            description: Date in DD-MMM-YY format
+            data_tests:
+              - date_format:
+                  arguments:
+                    column_name: transaction_Date
+                    date_format: "'%d-%b-%y'"
           - name: reference
             data_type: STRING
           - name: debit_amount
@@ -671,6 +695,12 @@ sources:
         columns:
           - name: transaction_date
             data_type: STRING
+            description: Date in DD-MMM-YY format
+            data_tests:
+              - date_format:
+                  arguments:
+                    column_name: transaction_date
+                    date_format: "'%d-%b-%y'"
           - name: transaction_description
             data_type: STRING
           - name: withdrawal
@@ -703,6 +733,12 @@ sources:
         columns:
           - name: transaction_date
             data_type: STRING
+            description: Date in DD-MMM-YY format
+            data_tests:
+              - date_format:
+                  arguments:
+                    column_name: transaction_date
+                    date_format: "'%d-%b-%y'"
           - name: posting_date
             data_type: STRING
           - name: description
