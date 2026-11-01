@@ -46,12 +46,10 @@ models:
         description: Transaction currency (e.g. "CHF", "EUR", "GBP").
       - name: local_amount
         description: Transaction amount in local currency (e.g. "-32539.0", "-24999.0", "-23000.0").
-      - name: sgd_currency
-        description: SGD currency indicator
-      - name: sgd_amount
-        description: Transaction amount in SGD
-      - name: exchange_rate
-        description: Exchange rate used for conversion
+      - name: translated_currency
+        description: Currency the transaction was translated into (SGD or EUR)
+      - name: translated_amount
+        description: Transaction amount in translated_currency
       - name: category
         description: Primary transaction category (e.g. "Allowance", "Bank Charge", "Books").
       - name: category2
@@ -62,8 +60,6 @@ models:
         description: Fixed or variable expense classification (e.g. "Capital", "Fixed", "Investment").
       - name: description
         description: Transaction description (e.g. "  ", "  CASH REBATE", " 0016RF9246128 SOAP CYCLING (SINGAP").
-      - name: day_of_week_iso
-        description: ISO day of week for transaction date
   - name: mart_eur_balances
     description: |
       All your account balances in one place (bank and investments), converted to EUR. Shows what you own at market value, gains/losses from investments and currency movements, with one row per account per day.
