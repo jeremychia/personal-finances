@@ -1,6 +1,1 @@
-select
-    local_date,
-    eur,
-    exchange_rate,
-    currency
-from {{ ref("stg_fx_fx_eur") }}
+{{ backfill_fx_rates(ref("stg_fx_fx_eur"), "eur") }}
