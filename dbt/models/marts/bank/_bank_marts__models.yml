@@ -58,8 +58,8 @@ models:
         description: Balance converted to EUR at historical spot rate (e.g. "-6460.98", "-6449.05", "-6372.2").
       - name: exchange_rate
         description: Current exchange rate (e.g. "0.002322071287588529", "0.002327475852438031", "0.002332470319315187").
-      - name: sgd_fx_gain_loss
-        description: FX gains/losses in SGD (for consistency)
+      - name: eur_fx_gain_loss
+        description: FX gains/losses in EUR (eur_amount minus eur_spot_rate)
   - name: mart_sgd_bank_transactions
     description: |
       All bank transactions converted to SGD. Use this for spending analysis, budgeting, and tracking where money goes across all accounts in a single currency.
